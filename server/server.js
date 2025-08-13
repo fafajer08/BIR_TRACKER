@@ -13,7 +13,20 @@ const app = express();
 const connectDB = require('./config/db');
 connectDB();
 
-app.use(cors());
+// Configure CORS to allow your frontend origin
+const corsOptions = {
+  origin: 'https://bir-tracker-qy3h.vercel.app',  // <-- your frontend URL
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, // if you use cookies or authentication headers
+  optionsSuccessStatus: 204
+};
+
+// Enable preflight across all routes
+app.options('*', cors(corsOptions));
+
+// Use CORS with the defined options
+app.use(cors(corsOptions));
+
 app.use(express.json());
 
 mongoose.connect(process.env.MONGO_URI)
